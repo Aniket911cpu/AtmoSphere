@@ -1,40 +1,52 @@
-import { WeatherService } from './utils/weatherService.js';
+import { fetchWeatherData } from './utils/weatherService.js';
 
-// 1. Setup Alarm on Install
+const ALARM_NAME = 'weatherUpdate';
+const ALARM_INTERVAL_MIN = 20;
+
+// Initialize on install
 chrome.runtime.onInstalled.addListener(() => {
-  console.log("AtmoSphere AI Installed.");
-  // Create an alarm that fires every 20 minutes
-  chrome.alarms.create("weatherRefresh", { periodInMinutes: 20 });
-  // Initial fetch
-  updateBadge();
+  console.log('AtmoSphere AI Installed');
+  setupAlarm();
+  updateBadge(); // Initial fetch
 });
 
-// 2. Listen for Alarm
+// Setup Alarm
+function setupAlarm() {
+  chrome.alarms.create(ALARM_NAME, {
+    periodInMinutes: ALARM_INTERVAL_MIN
+  });
+}
+
+// Listen for Alarm
 chrome.alarms.onAlarm.addListener((alarm) => {
-  if (alarm.name === "weatherRefresh") {
+  if (alarm.name === ALARM_NAME) {
     updateBadge();
   }
 });
 
-// 3. Update Badge Function
+// Update Badge Visuals
 async function updateBadge() {
   try {
-    const data = await WeatherService.getWeatherData(true); // Force refresh for background
-    const temp = Math.round(data.current.temp);
-    
-    // Set Text
-    chrome.action.setBadgeText({ text: `${temp}°` });
+    // 1. Force Yellow Background (Always)
+    chrome.action.setBadgeBackgroundColor({ color: '#EAB308' });
 
-    // Set Color based on Temp
-    let color = "#777"; // Default Grey
-    if (temp <= 10) color = "#3b82f6"; // Blue (Cold)
-    if (temp > 10 && temp < 25) color = "#f59e0b"; // Orange (Mild)
-    if (temp >= 25) color = "#ef4444"; // Red (Hot)
+    // 2. Fetch Data
+    const weather = await fetchWeatherData();
 
-    chrome.action.setBadgeBackgroundColor({ color: color });
-    
-  } catch (e) {
-    console.error("Background update failed", e);
-    chrome.action.setBadgeText({ text: "Err" });
+    // 3. Set Text
+    if (weather && weather.temp !== undefined) {
+      chrome.action.setBadgeText({ text: `${weather.temp}°` });
+      chrome.action.setBadgeTextColor({ color: '#000000' }); // Black text
+    }
+
+  } catch (error) {
+    console.warn('Background Update Failed:', error);
+
+    // Handle "Location missing" specifically or general errors
+    if (error.message.includes('Location')) {
+      chrome.action.setBadgeText({ text: "?" });
+    } else {
+      chrome.action.setBadgeText({ text: "!" }); // General error
+    }
   }
 }

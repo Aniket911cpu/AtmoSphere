@@ -1,29 +1,37 @@
 {
   "manifest_version": 3,
   "name": "AtmoSphere AI",
-  "version": "1.1",
+  "version": "2.0",
   "description": "Pro-grade weather dashboard with AI summaries and smart alerts.",
   "permissions": [
     "storage",
     "geolocation",
     "alarms",
-    "action",
-    "notifications" 
+    "action"
   ],
   "host_permissions": [
     "https://api.open-meteo.com/*",
-    "https://api.bigdatacloud.net/*",
-    "https://geocoding-api.open-meteo.com/*"
+    "https://api.openai.com/*"
   ],
   "background": {
     "service_worker": "background.js",
     "type": "module"
   },
   "action": {
-    "default_popup": "popup/popup.html"
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
   },
   "options_ui": {
     "page": "options/options.html",
     "open_in_tab": true
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
   }
 }
