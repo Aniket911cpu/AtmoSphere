@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome to AtmoSphere AI</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            color: #EAB308;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #A1A1AA;
+        }
+
+        .pin-instruction {
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(234, 179, 8, 0.1);
+            border-radius: 12px;
+            border: 1px solid rgba(234, 179, 8, 0.3);
+        }
+
+        .btn {
+            display: inline-block;
+            background: #EAB308;
+            color: black;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Welcome to AtmoSphere</h1>
+        <p>The smartest weather dashboard for your browser is now installed.</p>
+
+        <div class="pin-instruction">
+            <h3>📌 Don't forget to Pin it!</h3>
+            <p>Click the 🧩 puzzle icon in your toolbar and pin AtmoSphere for instant access.</p>
+        </div>
+
+        <p>We'll start learning your location automatically. <br>Open the extension to see your first AI Summary.</p>
+
+        <a href="#" onclick="window.close()" class="btn">Get Started</a>
+    </div>
+</body>
+
+</html>

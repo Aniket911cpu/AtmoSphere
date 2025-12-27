@@ -4,11 +4,16 @@ const ALARM_NAME = 'weatherUpdate';
 const ALARM_INTERVAL_MIN = 20;
 
 // Initialize on install
-chrome.runtime.onInstalled.addListener(() => {
-  console.log('AtmoSphere AI Installed');
+chrome.runtime.onInstalled.addListener((details) => {
+  if (details.reason === 'install') {
+    chrome.tabs.create({ url: 'welcome.html' });
+  }
   setupAlarm();
   updateBadge(); // Initial fetch
 });
+
+// Set Uninstall URL (Must be HTTP/S, so using placeholder)
+chrome.runtime.setUninstallURL('https://forms.gle/placeholderSurvey');
 
 // Setup Alarm
 function setupAlarm() {

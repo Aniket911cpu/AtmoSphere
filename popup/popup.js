@@ -63,20 +63,32 @@ function renderHourly(hourlyData) {
   const container = document.getElementById('hourlyList');
   container.innerHTML = '';
 
-  hourlyData.forEach(hour => {
-    const el = document.createElement('div');
-    el.className = 'hourly-item';
+  // Get Format Preference
+  chrome.storage.local.get({ timeFormat: '24' }, (res) => {
+    const is12Hour = res.timeFormat === '12';
 
-    // Parse time (ISO) to HH:MM or Just Hour
-    const date = new Date(hour.time);
-    const timeStr = date.getHours() + ':00';
+    hourlyData.forEach(hour => {
+      const el = document.createElement('div');
+      el.className = 'hourly-item';
 
-    el.innerHTML = `
-      <span class="hour-time">${timeStr}</span>
-      <span class="hour-icon">${getWeatherIcon(hour.code)}</span>
-      <span class="hour-temp">${hour.temp}°</span>
-    `;
-    container.appendChild(el);
+      // Parse time (ISO)
+      const date = new Date(hour.time);
+      let timeStr = date.getHours() + ':00';
+
+      if (is12Hour) {
+        const h = date.getHours();
+        const suffix = h >= 12 ? 'PM' : 'AM';
+        const h12 = h % 12 || 12;
+        timeStr = h12 + (h12 < 10 ? '' : '') + ` ${suffix}`; // Simplified for width
+      }
+
+      el.innerHTML = `
+          <span class="hour-time">${timeStr}</span>
+          <span class="hour-icon">${getWeatherIcon(hour.code)}</span>
+          <span class="hour-temp">${hour.temp}°</span>
+        `;
+      container.appendChild(el);
+    });
   });
 }
 
@@ -107,12 +119,8 @@ function renderDaily(dailyData) {
 function renderStats(data) {
   document.getElementById('uvIndex').textContent = data.uv_index;
   document.getElementById('humidity').textContent = `${data.humidity}%`;
-  document.getElementById('windSpeed').textContent = `${data.wind_speed} km/h`;
-  // OpenMeteo current object doesn't always have precip chance % easily in 'current', 
-  // sometimes requires hourly processing. We used precipitation amount in fetch, but label says %.
-  // For safety, let's just use what we have or placeholder.
-  // Actually we fetched `precipitation` (mm). Let's just show that or -- 
-  document.getElementById('precip').textContent = "--";
+  document.getElementById('windSpeed').textContent = `${data.wind_speed} ${data.units === 'imperial' ? 'mph' : 'km/h'}`;
+  document.getElementById('precip').textContent = `${data.precip_prob}%`;
 }
 
 function renderAI(text) {

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Goodbye from AtmoSphere</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: white;
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .card {
+            background: #1e1e1e;
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            max-width: 500px;
+            border-top: 4px solid #EAB308;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        .feedback-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #333;
+            color: #ccc;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+        .feedback-btn:hover {
+            background: #444;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <h2>We're sorry to see you go.</h2>
+        <p>If you have a moment, let us know how we can improve.</p>
+        <a href="mailto:support@atmosphere.ai?subject=Uninstall Feedback" class="feedback-btn">Send Feedback</a>
+    </div>
+    <!-- Script to clear local storage could go here if we had page privileges before uninstall, but usually extension is already gone. -->
+</body>
+
+</html>

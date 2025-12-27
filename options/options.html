@@ -99,9 +99,17 @@
     <input type="text" id="customCity" placeholder="e.g. New York">
     <div class="help-text">Overrides the displayed location name. Detection is still based on GPS.</div>
 
-    <!-- Future: Unit Toggle -->
-    <!-- <label>Units</label> -->
-    <!-- <select id="units"><option value="metric">Metric (°C, km/h)</option><option value="imperial">Imperial (°F, mph)</option></select> -->
+    <label for="units">Units</label>
+    <select id="units">
+      <option value="metric">Metric (°C, km/h)</option>
+      <option value="imperial">Imperial (°F, mph)</option>
+    </select>
+
+    <label for="timeFormat" style="margin-top:12px">Time Format</label>
+    <select id="timeFormat">
+      <option value="24">24 Hour (14:00)</option>
+      <option value="12">12 Hour (2:00 PM)</option>
+    </select>
   </div>
 
   <button id="saveBtn">Save Settings</button>
