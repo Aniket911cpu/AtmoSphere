@@ -35,15 +35,14 @@ async function init() {
     const summary = await generateSummary(data);
     renderAI(summary);
 
-    // 5. Update City Name (Reverse Geo or custom)
-    // For now, we use a placeholder or check storage for custom name
-    // Could use a free reverse geo API if we had one in instructions, but prompt said "Custom Location" input in settings logic.
-    // We'll read from storage if available.
+    // 5. Update City Name
+    // Priority: Custom Override > Detected City > "My Location"
     chrome.storage.local.get(['customCity'], (res) => {
       if (res.customCity) {
         document.getElementById('cityName').textContent = res.customCity;
+      } else if (data.city) {
+        document.getElementById('cityName').textContent = data.city;
       } else {
-        // Default "My Location" if no custom city
         document.getElementById('cityName').textContent = "My Location";
       }
     });
