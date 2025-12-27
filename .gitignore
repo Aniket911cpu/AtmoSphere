@@ -1,0 +1,20 @@
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Node modules (if you add build tools later)
+node_modules/
+package-lock.json
+yarn.lock
+
+# IDE settings
+.vscode/
+.idea/
+
+# Extension builds
+*.crx
+*.zip
+
+# Local config containing keys (optional safety)
+config.js
+secrets.json
