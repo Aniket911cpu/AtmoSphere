@@ -1,31 +1,48 @@
-// Saves options to chrome.storage
-const saveOptions = () => {
-  const apiKey = document.getElementById('openai-key').value;
-  const location = document.getElementById('custom-loc').value;
-
-  chrome.storage.local.set(
-    { openaiKey: apiKey, customLocation: location },
-    () => {
-      const status = document.getElementById('status');
-      status.textContent = 'Options saved.';
-      setTimeout(() => { status.textContent = ''; }, 2000);
-      
-      // Trigger a refresh
-      chrome.runtime.sendMessage({ action: "refreshWeather" });
-    }
-  );
+// Defaults
+const defaultSettings = {
+  unitTemp: 'c',
+  unitSpeed: 'kmh',
+  notifyRain: false,
+  openaiKey: ''
 };
 
-// Restores select box and checkbox state using the preferences
-const restoreOptions = () => {
-  chrome.storage.local.get(
-    { openaiKey: '', customLocation: '' },
-    (items) => {
-      document.getElementById('openai-key').value = items.openaiKey;
-      document.getElementById('custom-loc').value = items.customLocation;
-    }
-  );
-};
+// Save
+document.getElementById('save-btn').addEventListener('click', () => {
+  const settings = {
+    unitTemp: document.getElementById('unit-temp').value,
+    unitSpeed: document.getElementById('unit-speed').value,
+    notifyRain: document.getElementById('notify-rain').checked,
+    openaiKey: document.getElementById('openai-key').value
+  };
 
-document.addEventListener('DOMContentLoaded', restoreOptions);
-document.getElementById('save').addEventListener('click', saveOptions);
+  chrome.storage.local.set({ settings }, () => {
+    const status = document.getElementById('status');
+    status.textContent = 'Settings Saved! Reloading extension...';
+    
+    // Notify Background & Popup to update immediately
+    chrome.runtime.sendMessage({ action: "settingsUpdated" });
+    
+    setTimeout(() => { status.textContent = ''; }, 2000);
+  });
+});
+
+// Load
+document.addEventListener('DOMContentLoaded', () => {
+  chrome.storage.local.get(['settings'], (result) => {
+    const s = result.settings || defaultSettings;
+    document.getElementById('unit-temp').value = s.unitTemp;
+    document.getElementById('unit-speed').value = s.unitSpeed;
+    document.getElementById('notify-rain').checked = s.notifyRain;
+    document.getElementById('openai-key').value = s.openaiKey;
+  });
+});
+
+// Reset
+document.getElementById('reset-btn').addEventListener('click', () => {
+  if(confirm("Are you sure? This will wipe your saved location and settings.")) {
+    chrome.storage.local.clear(() => {
+      alert("Extension reset. Please reload.");
+      chrome.runtime.reload();
+    });
+  }
+});

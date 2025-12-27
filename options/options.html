@@ -1,36 +1,109 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>AtmoSphere Settings</title>
+  <meta charset="UTF-8">
+  <title>AtmoSphere Preferences</title>
   <style>
-    body { font-family: sans-serif; padding: 30px; background: #f8fafc; color: #334155; }
-    .container { max-width: 500px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
-    h2 { margin-top: 0; }
-    .group { margin-bottom: 20px; }
-    label { display: block; margin-bottom: 5px; font-weight: bold; }
-    input[type="text"] { width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 5px; }
-    button { background: #3b82f6; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
-    button:hover { background: #2563eb; }
-    #status { margin-top: 10px; color: green; font-size: 0.9rem; }
+    :root { --primary: #3b82f6; --bg: #f8fafc; --card: #ffffff; --text: #334155; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #0f172a; --card: #1e293b; --text: #f1f5f9; }
+    }
+    body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 40px; max-width: 800px; margin: 0 auto; }
+    
+    h1 { border-bottom: 2px solid var(--primary); padding-bottom: 10px; margin-bottom: 30px; }
+    
+    .section { background: var(--card); padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom: 25px; }
+    .section-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 15px; color: var(--primary); display: flex; align-items: center; gap: 8px; }
+    
+    .control-group { margin-bottom: 20px; display: grid; grid-template-columns: 1fr 200px; gap: 20px; align-items: center; }
+    .control-desc { font-size: 0.9rem; color: #64748b; }
+    
+    select, input[type="text"] { padding: 10px; border-radius: 6px; border: 1px solid #cbd5e1; background: var(--bg); color: var(--text); width: 100%; }
+    
+    /* Toggles */
+    .toggle-switch { position: relative; width: 50px; height: 26px; }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
+    .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+    input:checked + .slider { background-color: var(--primary); }
+    input:checked + .slider:before { transform: translateX(24px); }
+
+    button.danger { background: #ef4444; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+    button.save { background: var(--primary); color: white; border: none; padding: 12px 30px; border-radius: 6px; cursor: pointer; font-size: 1rem; font-weight: bold; display: block; width: 100%; margin-top: 20px; }
+    
+    #status { text-align: center; margin-top: 15px; font-weight: bold; color: #10b981; min-height: 20px; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Settings</h2>
+
+  <h1>AtmoSphere AI Settings</h1>
+
+  <div class="section">
+    <div class="section-title">📏 Units & Formatting</div>
     
-    <div class="group">
-      <label>OpenAI API Key (For AI News)</label>
+    <div class="control-group">
+      <div>
+        <label>Temperature Unit</label>
+        <div class="control-desc">Choose between Celsius or Fahrenheit</div>
+      </div>
+      <select id="unit-temp">
+        <option value="c">Celsius (°C)</option>
+        <option value="f">Fahrenheit (°F)</option>
+      </select>
+    </div>
+
+    <div class="control-group">
+      <div>
+        <label>Wind Speed Unit</label>
+        <div class="control-desc">Select your preferred velocity measurement</div>
+      </div>
+      <select id="unit-speed">
+        <option value="kmh">Kilometers (km/h)</option>
+        <option value="mph">Miles (mph)</option>
+        <option value="ms">Meters (m/s)</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">🔔 Smart Alerts</div>
+    <div class="control-group">
+      <div>
+        <label>Rain Alerts</label>
+        <div class="control-desc">Get a desktop notification if rain is detected nearby (checks every 20m)</div>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="notify-rain">
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">🧠 Intelligence</div>
+    <div class="control-group">
+      <div>
+        <label>OpenAI API Key</label>
+        <div class="control-desc">Required for "News Anchor" style summaries. (Key is stored locally only)</div>
+      </div>
       <input type="text" id="openai-key" placeholder="sk-...">
     </div>
-
-    <div class="group">
-      <label>Custom Location (City Name - Coming Soon)</label>
-      <input type="text" id="custom-loc" placeholder="London, UK">
-    </div>
-
-    <button id="save">Save Settings</button>
-    <div id="status"></div>
   </div>
+
+  <div class="section">
+    <div class="section-title">⚙️ System</div>
+    <div class="control-group">
+      <div>
+        <label>Clear Cache & Reset</label>
+        <div class="control-desc">Fixes issues by deleting all saved data and location settings.</div>
+      </div>
+      <button class="danger" id="reset-btn">Reset All Data</button>
+    </div>
+  </div>
+
+  <button class="save" id="save-btn">Save Preferences</button>
+  <div id="status"></div>
+
   <script src="options.js"></script>
 </body>
 </html>
