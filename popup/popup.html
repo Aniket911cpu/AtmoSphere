@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AtmoSphere AI</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  
+  <div class="app-container">
+    <header>
+      <div class="location-box">
+        <span id="location-name">Detecting...</span>
+        <span class="status-dot"></span>
+      </div>
+      <button id="settings-btn">⚙️</button>
+    </header>
+
+    <section class="hero">
+      <div class="weather-icon" id="main-icon">☀️</div>
+      <div class="temp-box">
+        <h1 id="current-temp">--°</h1>
+        <p>Feels like <span id="feels-like">--</span>°</p>
+      </div>
+    </section>
+
+    <section class="ai-summary">
+      <div class="ai-badge">AI Report</div>
+      <p id="ai-text">Analyzing atmospheric data...</p>
+    </section>
+
+    <div class="scroll-container">
+      <h3>Hourly</h3>
+      <div class="hourly-strip" id="hourly-list">
+        </div>
+    </div>
+
+    <div class="forecast-list" id="daily-list">
+      </div>
+
+    <div class="grid-stats">
+      <div class="stat-card">
+        <span class="label">UV Index</span>
+        <span class="value" id="uv-index">--</span>
+      </div>
+      <div class="stat-card">
+        <span class="label">Humidity</span>
+        <span class="value" id="humidity">--%</span>
+      </div>
+      <div class="stat-card">
+        <span class="label">Wind</span>
+        <span class="value" id="wind-speed">-- km/h</span>
+      </div>
+      <div class="stat-card">
+        <span class="label">Precip</span>
+        <span class="value" id="precip-prob">--%</span>
+      </div>
+    </div>
+    
+    <footer>
+      Updated: <span id="last-updated">Just now</span>
+    </footer>
+  </div>
+
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

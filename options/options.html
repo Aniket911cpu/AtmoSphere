@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AtmoSphere Settings</title>
+  <style>
+    body { font-family: sans-serif; padding: 30px; background: #f8fafc; color: #334155; }
+    .container { max-width: 500px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
+    h2 { margin-top: 0; }
+    .group { margin-bottom: 20px; }
+    label { display: block; margin-bottom: 5px; font-weight: bold; }
+    input[type="text"] { width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 5px; }
+    button { background: #3b82f6; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
+    button:hover { background: #2563eb; }
+    #status { margin-top: 10px; color: green; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Settings</h2>
+    
+    <div class="group">
+      <label>OpenAI API Key (For AI News)</label>
+      <input type="text" id="openai-key" placeholder="sk-...">
+    </div>
+
+    <div class="group">
+      <label>Custom Location (City Name - Coming Soon)</label>
+      <input type="text" id="custom-loc" placeholder="London, UK">
+    </div>
+
+    <button id="save">Save Settings</button>
+    <div id="status"></div>
+  </div>
+  <script src="options.js"></script>
+</body>
+</html>
